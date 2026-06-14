@@ -17,7 +17,7 @@ class Player {
     this.image.onload = () => { // callback function
       this.loaded = true
     }
-    this.image.src = './images/player.png'
+    this.image.src = './images/player_2.png'
     this.currentFrame = 0
     this.elapsedTime = 0
     this.sprites = {
