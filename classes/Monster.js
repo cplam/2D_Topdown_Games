@@ -2,6 +2,10 @@ class Monster {
   constructor({ x, y, size, velocity = { x: 0, y: 0 }, imageSrc = './images/bamboo.png', sprites }) {
     this.x = x
     this.y = y
+    this.originalPosition = {
+        x: x,
+        y: y,
+    }
     this.width = size
     this.height = size
     this.velocity = velocity
@@ -81,26 +85,25 @@ class Monster {
   }
 
   setVelocity(deltaTime){
-    const changeDirectionInterval = 3
+    const changeDirectionInterval = 1
     if(this.elapsedMovementTime > changeDirectionInterval || this.elapsedMovementTime === 0) { // change direction, acutally no need the former condition
         this.elapsedMovementTime -= changeDirectionInterval
         
         const angle = Math.random() * Math.PI * 2 // 0 - 2pi
-        const speed = 20
-
-        const target_x = this.x + Math.cos(angle) * speed
-        const target_y = this.y + Math.sin(angle) * speed
-
-        const dx = target_x - this.x  // can be very big, or negative
-        const dy = target_y - this.y
-
-        const magnitude = Math.sqrt(dx * dx + dy * dy) // actually is the speed
-
-        this.velocity.x = (dx / magnitude) * speed
-        this.velocity.y = (dy / magnitude) * speed
+        const speed = 15
+        const targrtLocation = {
+            x: this.originalPosition.x + Math.cos(angle) * speed,
+            y: this.originalPosition.y + Math.sin(angle) * speed,
+        }
         
-        
+        const dx = targrtLocation.x - this.x
+        const dy = targrtLocation.y - this.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+
+        this.velocity.x = (dx / distance) * speed
+        this.velocity.y = (dy / distance) * speed
     }
+    this.elapsedMovementTime += deltaTime
   }
 
   updateHorizontalPosition(deltaTime) {
